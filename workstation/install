@@ -1,40 +1,40 @@
 #!/bin/bash
-#if [ -f "/etc/debian_version" ]; then
-install_base(){
-    # Install base system
-    apt-get update && \
-        apt-get install plymouth plymouth-label --no-install-recommends && \
-        tar -zxvf ./base/bootscreen/theme.tar.gz -C /usr/share/plymouth/themes/ && \
-            cp ./base/bootscreen/config /usr/share/plymouth/themes/default.plymouth
-    
-}
+if [ -f "/etc/debian_version" ]; then
+    install_base(){
+        # Install base system
+        apt-get update && \
+            apt-get install plymouth plymouth-label --no-install-recommends && \
+            tar -zxvf ./base/bootscreen/theme.tar.gz -C /usr/share/plymouth/themes/ && \
+                cp ./base/bootscreen/config /usr/share/plymouth/themes/default.plymouth
+        
+    }
 
-install_for_rc(){
-    echo "Installing for RC"
-    install_base
-}
+    install_for_rc(){
+        echo "Installing for RC"
+        install_base
+    }
 
-instal_for_pc(){
-    echo "Installing for PC"   
-    install_base
-}
+    instal_for_pc(){
+        echo "Installing for PC"   
+        install_base
+    }
 
-DIALOG_TITLE="Workstation: Robot OS Installation"
-DIALOG_LISTS=("RC" "Smart remote control" 1 \
-    "Desktop" "Any 64bit PC or laptop" 2
-)
-DIALOG_TEXT="\nSelect workstation GUI:."
-SELECTED=$(dialog --keep-tite --title "${DIALOG_TITLE}" \
-                --radiolist "${DIALOG_TEXT}" 12 60 10 "${DIALOG_LISTS[@]}" \
-                2>&1 >/dev/tty)
+    DIALOG_TITLE="Workstation: Robot OS Installation"
+    DIALOG_LISTS=("RC" "Smart remote control" 1 \
+        "Desktop" "Any 64bit PC or laptop" 2
+    )
+    DIALOG_TEXT="\nSelect workstation GUI:."
+    SELECTED=$(dialog --keep-tite --title "${DIALOG_TITLE}" \
+                    --radiolist "${DIALOG_TEXT}" 12 60 10 "${DIALOG_LISTS[@]}" \
+                    2>&1 >/dev/tty)
 
-if [[ $SELECTED ==  "RC" ]] 
-then
-    install_for_rc
-elif [[ $SELECTED ==  "Desktop" ]] 
-then
-    instal_for_pc
+    if [[ $SELECTED ==  "RC" ]] 
+    then
+        install_for_rc
+    elif [[ $SELECTED ==  "Desktop" ]] 
+    then
+        instal_for_pc
+    fi
+else
+    echo "Looks like you are not running a debian system."
 fi
-#else
-#    echo "Looks like you are not running a debian system."
-#fi
