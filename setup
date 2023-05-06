@@ -1,35 +1,35 @@
 #!/bin/bash
-if [ -f "/etc/debian_version" ]; then
-    install_models(){
-        echo "Installing Robot System"   
-    }
+#if [ -f "/etc/debian_version" ]; then
+install_models(){
+    echo "Installing Robot System"   
+}
 
-    install_station(){
-        echo "Installing Station"   
-    }
+install_station(){
+    bash ./workstation/install
+}
 
-    apt-get update
+# apt-get update
 
-    DIALOG_TITLE="Robot OS Installation"
-    DIALOG_LISTS=("Models" "Robot models" 1 \
-        "Station" "Workstation GUI" 2
-    )
-    DIALOG_TEXT="\nSelect the software you want to install on your system. This will need internet connection,please make sure you are connected before proceeding."
-    SELECTED=$(dialog --keep-tite --title "${DIALOG_TITLE}" \
-                    --checklist "${DIALOG_TEXT}" 12 60 10 "${DIALOG_LISTS[@]}" \
-                    2>&1 >/dev/tty)
+DIALOG_TITLE="Robot OS Installation"
+DIALOG_LISTS=("Models" "Robot models" 1 \
+    "Station" "Workstation GUI" 2
+)
+DIALOG_TEXT="\nSelect the software you want to install on your system. This will need internet connection,please make sure you are connected before proceeding."
+SELECTED=$(dialog --keep-tite --title "${DIALOG_TITLE}" \
+                --checklist "${DIALOG_TEXT}" 12 60 10 "${DIALOG_LISTS[@]}" \
+                2>&1 >/dev/tty)
 
-    if [[ $SELECTED ==  "Models" ]] 
-    then
-        install_models
-    elif [[ $SELECTED ==  "Station" ]] 
-    then
-        install_station
-    elif [[ $SELECTED ==  "Models Station" ]] 
-    then
-        install_models
-        install_station
-    fi
-else
-    echo "Looks like you are not running a debian system."
+if [[ $SELECTED ==  "Models" ]] 
+then
+    install_models
+elif [[ $SELECTED ==  "Station" ]] 
+then
+    install_station
+elif [[ $SELECTED ==  "Models Station" ]] 
+then
+    install_models
+    install_station
 fi
+#else
+#    echo "Looks like you are not running a debian system."
+#fi
